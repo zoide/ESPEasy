@@ -11,8 +11,8 @@
 #define CPLUGIN_ID_014              14
 
 // Define which Homie version to use
-//#define CPLUGIN_014_V3
-#define CPLUGIN_014_V4
+#define CPLUGIN_014_V3
+//#define CPLUGIN_014_V4
 
 #ifdef CPLUGIN_014_V3
   #define CPLUGIN_014_HOMIE_VERSION   "3.0.0"
