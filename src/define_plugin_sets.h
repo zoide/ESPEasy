@@ -667,11 +667,11 @@ To create/register a plugin, you have to :
     #define USES_P001   // Switch
     #define USES_P002   // ADC
     #define USES_P003   // Pulse
-    #define USES_P004   // Dallas
+    //#define USES_P004   // Dallas
     #define USES_P005   // DHT
     #define USES_P006   // BMP085
     #define USES_P007   // PCF8591
-    #define USES_P008   // RFID
+    //#define USES_P008   // RFID
     #define USES_P009   // MCP
 
     #define USES_P010   // BH1750
@@ -685,10 +685,10 @@ To create/register a plugin, you have to :
     #define USES_P018   // Dust
     #define USES_P019   // PCF8574
 
-    #define USES_P020   // Ser2Net
+    //#define USES_P020   // Ser2Net
     #define USES_P021   // Level
     #define USES_P022   // PCA9685
-    #define USES_P023   // OLED
+    //#define USES_P023   // OLED
     #define USES_P024   // MLX90614
     #define USES_P025   // ADS1115
     #define USES_P026   // SysInfo
@@ -705,9 +705,9 @@ To create/register a plugin, you have to :
     #define USES_P036   // FrameOLED
     #define USES_P037   // MQTTImport
     #define USES_P038   // NeoPixel
-    #define USES_P039   // Environment - Thermocouple
+    //#define USES_P039   // Environment - Thermocouple
 
-    #define USES_P040   // RFID - ID12LA/RDM6300
+    //#define USES_P040   // RFID - ID12LA/RDM6300
     // FIXME TD-er: Disabled NeoClock and Candle plugin to make builds fit in max bin size.
 //    #define USES_P041   // NeoClock
 //    #define USES_P042   // Candle
@@ -722,20 +722,20 @@ To create/register a plugin, you have to :
 
     #define USES_P063   // TTP229_KeyPad
     #define USES_P073   // 7DG
-    #define USES_P079   // Wemos Motoshield
+    //#define USES_P079   // Wemos Motoshield
 #endif
 
 
 #ifdef CONTROLLER_SET_STABLE
-    #define USES_C001   // Domoticz HTTP
-    #define USES_C002   // Domoticz MQTT
-    #define USES_C003   // Nodo telnet
-    #define USES_C004   // ThingSpeak
+    //#define USES_C001   // Domoticz HTTP
+    //#define USES_C002   // Domoticz MQTT
+    //#define USES_C003   // Nodo telnet
+    //#define USES_C004   // ThingSpeak
     #define USES_C005   // Home Assistant (openHAB) MQTT
-    #define USES_C006   // PiDome MQTT
-    #define USES_C007   // Emoncms
+    //#define USES_C006   // PiDome MQTT
+    //#define USES_C007   // Emoncms
     #define USES_C008   // Generic HTTP
-    #define USES_C009   // FHEM HTTP
+    //#define USES_C009   // FHEM HTTP
     #define USES_C010   // Generic UDP
     #define USES_C013   // ESPEasy P2P network
 #endif
@@ -754,44 +754,44 @@ To create/register a plugin, you have to :
 
 // TESTING #####################################
 #ifdef PLUGIN_SET_TESTING
-    #define USES_P045   // MPU6050
-    #define USES_P047   // I2C_soil_misture
-    #define USES_P048   // Motoshield_v2
+    //#define USES_P045   // MPU6050
+    //#define USES_P047   // I2C_soil_misture
+    //#define USES_P048   // Motoshield_v2
 
-    #define USES_P051   // AM2320
+    //#define USES_P051   // AM2320
 
-    #define USES_P053   // PMSx003
-    #define USES_P054   // DMX512
-    #define USES_P055   // Chiming
-    #define USES_P057   // HT16K33_LED
-    #define USES_P058   // HT16K33_KeyPad
+    //#define USES_P053   // PMSx003
+    //#define USES_P054   // DMX512
+    //#define USES_P055   // Chiming
+    //#define USES_P057   // HT16K33_LED
+    //#define USES_P058   // HT16K33_KeyPad
 
-    #define USES_P060   // MCP3221
-    #define USES_P061   // Keypad
-    #define USES_P062   // MPR121_KeyPad
+    //#define USES_P060   // MCP3221
+    //#define USES_P061   // Keypad
+    //#define USES_P062   // MPR121_KeyPad
 
-    #define USES_P064   // APDS9960
-    #define USES_P065   // DRF0299
-    #define USES_P066   // VEML6040
-    #define USES_P067   // HX711_Load_Cell
-    #define USES_P068   // SHT3x
-    #define USES_P069   // LM75A
+    //#define USES_P064   // APDS9960
+    //#define USES_P065   // DRF0299
+    //#define USES_P066   // VEML6040
+    //#define USES_P067   // HX711_Load_Cell
+    //#define USES_P068   // SHT3x
+    //#define USES_P069   // LM75A
 
-    #define USES_P070   // NeoPixel_Clock
-    #define USES_P071   // Kamstrup401
-    #define USES_P072   // HDC1080
-    #define USES_P074   // TSL2561
-    #define USES_P075   // Nextion
-    #define USES_P076   // HWL8012   in POW r1
-    // Needs CSE7766 Energy sensor, via Serial RXD 4800 baud 8E1 (GPIO1), TXD (GPIO3)
-    #define USES_P077	  // CSE7766   in POW R2
-    #define USES_P078   // Eastron Modbus Energy meters
-    #define USES_P080   // iButton Sensor  DS1990A
+    //#define USES_P070   // NeoPixel_Clock
+    //#define USES_P071   // Kamstrup401
+    //#define USES_P072   // HDC1080
+    //#define USES_P074   // TSL2561
+    //#define USES_P075   // Nextion
+    //#define USES_P076   // HWL8012   in POW r1
+    //// Needs CSE7766 Energy sensor, via Serial RXD 4800 baud 8E1 (GPIO1), TXD (GPIO3)
+    //#define USES_P077	  // CSE7766   in POW R2
+    //#define USES_P078   // Eastron Modbus Energy meters
+    //#define USES_P080   // iButton Sensor  DS1990A
     #define USES_P081   // Cron
-    #define USES_P082   // GPS
-    #define USES_P083   // SGP30
-    #define USES_P084   // VEML6070
-    #define USES_P085   // AcuDC24x
+    //#define USES_P082   // GPS
+    //#define USES_P083   // SGP30
+    //#define USES_P084   // VEML6070
+    //#define USES_P085   // AcuDC24x
     #define USES_P086   // Receiving values according Homie convention. Works together with C014 Homie controller
     //#define USES_P087   // Serial Proxy
     #define USES_P089   // Serial Proxy
@@ -800,10 +800,10 @@ To create/register a plugin, you have to :
 
 #ifdef CONTROLLER_SET_TESTING
     #define USES_C011   // Generic HTTP Advanced
-    #define USES_C012   // Blynk HTTP
+    //#define USES_C012   // Blynk HTTP
     #define USES_C014   // homie 3 & 4dev MQTT
     //#define USES_C015   // Blynk
-    #define USES_C017   // Zabbix
+    //#define USES_C017   // Zabbix
     // #define USES_C018 // TTN RN2483
 #endif
 
