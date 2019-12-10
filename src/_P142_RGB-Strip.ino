@@ -101,7 +101,7 @@ boolean Plugin_142(byte function, struct EventStruct *event, String& string)
         Settings.TaskDevicePluginConfig[event->TaskIndex][3] = getFormItemInt(F("taskdeviceport"));        
         
         for (byte i=0; i<4; i++)
-          if (Settings.TaskDevicePluginConfig[event->TaskIndex][i] >= 16)
+          if (Settings.TaskDevicePluginConfig[event->TaskIndex][i] >= 40)
             Settings.TaskDevicePluginConfig[event->TaskIndex][i] = -1;
 
         success = true;
