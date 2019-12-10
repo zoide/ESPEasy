@@ -488,10 +488,11 @@ To create/register a plugin, you have to :
 //    #define PLUGIN_SET_ONLY_SWITCH
 
     #define  PLUGIN_SET_TESTING
-    #define  CONTROLLER_SET_STABLE
+   // #define  CONTROLLER_SET_STABLE
+	#define  CONTROLLER_SET_TESTING
     #define  NOTIFIER_SET_STABLE
-    #define  PLUGIN_SET_STABLE     // add stable
-    // See also PLUGIN_SET_TEST_ESP32 section at end,
+   // #define  PLUGIN_SET_STABLE     // add stable
+	// See also PLUGIN_SET_TEST_ESP32 section at end,
     // where incompatible plugins will be disabled.
     // TODO : Check compatibility of plugins for ESP32 board.
 #endif
@@ -795,6 +796,7 @@ To create/register a plugin, you have to :
     #define USES_P086   // Receiving values according Homie convention. Works together with C014 Homie controller
     //#define USES_P087   // Serial Proxy
     #define USES_P089   // Serial Proxy
+    #define USES_P142   // RGB LED Strip
 #endif
 
 
@@ -904,7 +906,7 @@ To create/register a plugin, you have to :
 \******************************************************************************/
 #ifdef PLUGIN_SET_TEST_ESP32
   #undef USES_P010   // BH1750          (doesn't work yet on ESP32)
-//  #undef USES_P049   // MHZ19           (doesn't work yet on ESP32)
+ // #undef USES_P049   // MHZ19           (doesn't work yet on ESP32)
 
 //  #undef USES_P052   // SenseAir        (doesn't work yet on ESP32)
 //  #undef USES_P053   // PMSx003
