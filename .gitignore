@@ -15,6 +15,11 @@
 pre_extra_script.py
 *.code-workspace
 
+## Eclipse #####################
+.settings/
+.project
+.cproject
+
 ## Project #####################
 lib/readme.txt
 src/Custom.h
