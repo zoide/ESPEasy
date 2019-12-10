@@ -82,8 +82,6 @@ boolean Plugin_142(byte function, struct EventStruct *event, String& string)
 
     case PLUGIN_WEBFORM_LOAD:
       {
-        char tmpString[128];
-
         addHtml(F("<TR><TD>GPIO:<TD>"));
         addFormPinSelect(F("1st GPIO (R):"), F("taskdevicepin1"), Settings.TaskDevicePluginConfig[event->TaskIndex][0]);
         addFormPinSelect(F("2nd GPIO (G):"), F("taskdevicepin2"), Settings.TaskDevicePluginConfig[event->TaskIndex][1]);
