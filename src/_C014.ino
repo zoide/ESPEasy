@@ -523,6 +523,9 @@ bool CPlugin_014(byte function, struct EventStruct *event, String& string)
       {
         byte ControllerID = findFirstEnabledControllerWithId(CPLUGIN_ID_014);
         bool validTopic = false;
+        //is this message for us?
+        if(!strstr(event->String1.c_str(),Settings.Name))
+        	break;
         if (ControllerID == CONTROLLER_MAX) {
           // Controller is not enabled.
           break;
@@ -549,6 +552,8 @@ bool CPlugin_014(byte function, struct EventStruct *event, String& string)
               log+=nodeName;
               log+=F(" V: ");
               log+=valueName;
+              log+=F(" RAW: ");
+              log+=event->String1;
             }
             if (nodeName == F(CPLUGIN_014_SYSTEM_DEVICE)) // msg to a system device
             {
