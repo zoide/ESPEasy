@@ -1,3 +1,6 @@
 [submodule "lib/ESP32_AnalogWrite"]
 	path = lib/ESP32_AnalogWrite
 	url = https://github.com/ERROPiX/ESP32_AnalogWrite.git
+[submodule "lib/RGBConverter"]
+	path = lib/RGBConverter
+	url = https://github.com/ratkins/RGBConverter.git
