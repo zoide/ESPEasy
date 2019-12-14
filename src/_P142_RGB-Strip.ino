@@ -20,14 +20,15 @@
 
 //#include <Arduino.h> //  - no external lib required
 #include <analogWrite.h>
+#include <RGBConverter.h>
 
-static float Plugin_142_hsvPrev[3] = {0,0,0};
-static float Plugin_142_hsvDest[3] = {0,0,0};
-static float Plugin_142_hsvAct[3] = {0,0,0};
+static double Plugin_142_hsvPrev[3] = {0,0,0};
+static double Plugin_142_hsvDest[3] = {0,0,0};
+static double Plugin_142_hsvAct[3] = {0,0,0};
 static long millisFadeBegin = 0;
 static long millisFadeEnd = 0;
 static long millisFadeTime = 1500;
-static float Plugin_142_cycle = 0;
+static double Plugin_142_cycle = 0;
 
 static int Plugin_142_pin[4] = {-1,-1,-1,-1};
 static int Plugin_142_lowActive = false;
@@ -136,7 +137,7 @@ boolean Plugin_142(byte function, struct EventStruct *event, String& string)
 
         if (command == F("rgb"))
         {
-          float rgb[3];
+          double rgb[3];
           rgb[0] = event->Par1 / 255.0;   //R
           rgb[1] = event->Par2 / 255.0;   //G
           rgb[2] = event->Par3 / 255.0;   //B
@@ -155,7 +156,7 @@ boolean Plugin_142(byte function, struct EventStruct *event, String& string)
 
         if (command == F("hsl"))
         {
-          float hsl[3];
+          double hsl[3];
           hsl[0] = event->Par1 / 360.0;   //Hue
           hsl[1] = event->Par2 / 100.0;   //Saturation
           hsl[2] = event->Par3 / 100.0;   //Lightness
@@ -259,7 +260,7 @@ boolean Plugin_142(byte function, struct EventStruct *event, String& string)
           }
           else   //just fading
           {
-            float fade = float(millisAct-millisFadeBegin) / float(millisFadeEnd-millisFadeBegin);
+            double fade = double(millisAct-millisFadeBegin) / double(millisFadeEnd-millisFadeBegin);
             fade = Plugin_142_valueClamp(fade);
             fade = Plugin_142_valueSmoothFadingOut(fade);
 
@@ -277,10 +278,10 @@ boolean Plugin_142(byte function, struct EventStruct *event, String& string)
   return success;
 }
 
-void Plugin_142_Output(float* hsvIn)
+void Plugin_142_Output(double* hsvIn)
 {
-  float hsvw[4];
-  float rgbw[4];
+  double hsvw[4];
+  double rgbw[4];
 
   String log = F("RGB-S: RGBW ");
 
@@ -300,7 +301,7 @@ void Plugin_142_Output(float* hsvIn)
   rgbw[3] = hsvw[3];
 
   //reduce power for mix colors
-  float cv = sqrt(rgbw[0]*rgbw[0] + rgbw[1]*rgbw[1] + rgbw[2]*rgbw[2]);
+  double cv = sqrt(rgbw[0]*rgbw[0] + rgbw[1]*rgbw[1] + rgbw[2]*rgbw[2]);
   if (cv > 0.0)
   {
     cv = hsvw[2] / cv;
@@ -366,57 +367,51 @@ void Plugin_142_Output(float* hsvIn)
 
 // HSV->RGB conversion based on GLSL version
 // expects hsv channels defined in 0.0 .. 1.0 interval
-float fract(float x) { return x - int(x); }
+double fract(double x) { return x - int(x); }
 
-float mix(float a, float b, float t) { return a + (b - a) * t; }
+double mix(double a, double b, double t) { return a + (b - a) * t; }
 
-float step(float e, float x) { return x < e ? 0.0 : 1.0; }
+double step(double e, double x) { return x < e ? 0.0 : 1.0; }
 
-float* Plugin_142_hsv2rgb(const float* hsv, float* rgb)
+double* Plugin_142_hsv2rgb(const double* hsv, double* rgb)
 {
-  rgb[0] = hsv[2] * mix(1.0, constrain(abs(fract(hsv[0] + 1.0) * 6.0 - 3.0) - 1.0, 0.0, 1.0), hsv[1]);
-  rgb[1] = hsv[2] * mix(1.0, constrain(abs(fract(hsv[0] + 0.6666666) * 6.0 - 3.0) - 1.0, 0.0, 1.0), hsv[1]);
-  rgb[2] = hsv[2] * mix(1.0, constrain(abs(fract(hsv[0] + 0.3333333) * 6.0 - 3.0) - 1.0, 0.0, 1.0), hsv[1]);
+  RGBConverter conv;
+  byte rgbtmp[3];
+  conv.hsvToRgb(hsv[0], hsv[1], hsv[2], rgbtmp);
+  rgb[0] = (double)(rgbtmp[0]*255); //do we need the *255?
+  rgb[1] = (double)(rgbtmp[1]*255); //do we need the *255?
+  rgb[2] = (double)(rgbtmp[2]*255); //do we need the *255?
   return rgb;
 }
 
-float* Plugin_142_rgb2hsv(const float* rgb, float* hsv)
+double* Plugin_142_rgb2hsv(const double* rgb, double* hsv)
 {
-  float s = step(rgb[2], rgb[1]);
-  float px = mix(rgb[2], rgb[1], s);
-  float py = mix(rgb[1], rgb[2], s);
-  float pz = mix(-1.0, 0.0, s);
-  float pw = mix(0.6666666, -0.3333333, s);
-  s = step(px, rgb[0]);
-  float qx = mix(px, rgb[0], s);
-  float qz = mix(pw, pz, s);
-  float qw = mix(rgb[0], px, s);
-  float d = qx - std::min(qw, py);
-  hsv[0] = abs(qz + (qw - py) / (6.0 * d + 1e-10));
-  hsv[1] = d / (qx + 1e-10);
-  hsv[2] = qx;
+  RGBConverter conv;
+  byte r = (byte)(rgb[0]*255);
+  byte g = (byte)(rgb[1]*255);
+  byte b = (byte)(rgb[2]*255);
+  conv.rgbToHsv(r,g,b,hsv);
   return hsv;
 }
 
 //see http://codeitdown.com/hsl-hsb-hsv-color/
-float* Plugin_142_hsl2hsv(const float* hsl, float* hsv)
+double* Plugin_142_hsl2hsv(const double* hsl, double* hsv)
 {
-  float B = ( 2.0*hsl[2] + hsl[1] * (1.0-(2.0*hsl[2]-1.0)) ) / 2.0;   // B = ( 2L+Shsl(1-|2L-1|) ) / 2
-  float S = (B!=0) ? 2.0*(B-hsl[2]) / B : 0.0;   // S = 2(B-L) / B
-  hsv[0] = hsl[0];
-  hsv[1] = S;
-  hsv[2] = B;
+  RGBConverter conv;
+  byte rgb[3];
+  conv.hslToRgb(hsl[0], hsl[1], hsl[2], rgb);
+  conv.rgbToHsv(rgb[0],rgb[1],rgb[2],hsv);
   return hsv;
 }
 
-float* Plugin_142_hsvCopy(const float* hsvSrc, float* hsvDst)
+double* Plugin_142_hsvCopy(const double* hsvSrc, double* hsvDst)
 {
   for (byte i=0; i<3; i++)
     hsvDst[i] = hsvSrc[i];
   return hsvDst;
 }
 
-float* Plugin_142_hsvClamp(float* hsv)
+double* Plugin_142_hsvClamp(double* hsv)
 {
   while (hsv[0] > 1.0)
     hsv[0] -= 1.0;
@@ -433,7 +428,7 @@ float* Plugin_142_hsvClamp(float* hsv)
   return hsv;
 }
 
-float Plugin_142_valueClamp(float v)
+double Plugin_142_valueClamp(double v)
 {
   if (v < 0.0)
     v = 0.0;
@@ -442,7 +437,7 @@ float Plugin_142_valueClamp(float v)
   return v;
 }
 
-float Plugin_142_valueSmoothFadingOut(float v)
+double Plugin_142_valueSmoothFadingOut(double v)
 {
   v = Plugin_142_valueClamp(v);
   v = 1.0-v;   //smooth fading out
