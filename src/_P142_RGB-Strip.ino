@@ -283,7 +283,7 @@ void Plugin_142_Output(double* hsvIn)
   double hsvw[4];
   double rgbw[4];
 
-  String log = F("RGB-S: RGBW ");
+  String log = F("RGB-S: OUT RGBW ");
 
   Plugin_142_hsvCopy(hsvIn, hsvw);
   Plugin_142_hsvClamp(hsvw);
@@ -378,18 +378,18 @@ double* Plugin_142_hsv2rgb(const double* hsv, double* rgb)
   RGBConverter conv;
   byte rgbtmp[3];
   conv.hsvToRgb(hsv[0], hsv[1], hsv[2], rgbtmp);
-  rgb[0] = (double)(rgbtmp[0]*255); //do we need the *255?
-  rgb[1] = (double)(rgbtmp[1]*255); //do we need the *255?
-  rgb[2] = (double)(rgbtmp[2]*255); //do we need the *255?
+  rgb[0] = (double)(rgbtmp[0]/255.0);
+  rgb[1] = (double)(rgbtmp[1]/255.0);
+  rgb[2] = (double)(rgbtmp[2]/255.0);
   return rgb;
 }
 
 double* Plugin_142_rgb2hsv(const double* rgb, double* hsv)
 {
   RGBConverter conv;
-  byte r = (byte)(rgb[0]*255);
-  byte g = (byte)(rgb[1]*255);
-  byte b = (byte)(rgb[2]*255);
+  byte r = (byte)(rgb[0] * 255);
+  byte g = (byte)(rgb[1] * 255);
+  byte b = (byte)(rgb[2] * 255);
   conv.rgbToHsv(r,g,b,hsv);
   return hsv;
 }
