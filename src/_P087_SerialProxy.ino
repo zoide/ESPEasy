@@ -9,6 +9,7 @@
 //
 
 #include <ESPeasySerial.h>
+#include "_Plugin_Helper.h"
 
 #define PLUGIN_087
 #define PLUGIN_ID_087           87
@@ -184,7 +185,7 @@ boolean Plugin_087(byte function, struct EventStruct *event, String& string) {
   switch (function) {
     case PLUGIN_DEVICE_ADD: {
       Device[++deviceCount].Number           = PLUGIN_ID_087;
-      Device[deviceCount].Type               = DEVICE_TYPE_DUAL;
+      Device[deviceCount].Type               = DEVICE_TYPE_SERIAL;
       Device[deviceCount].VType              = SENSOR_TYPE_STRING;
       Device[deviceCount].Ports              = 0;
       Device[deviceCount].PullUpOption       = false;
@@ -316,7 +317,7 @@ boolean Plugin_087(byte function, struct EventStruct *event, String& string) {
 
       for (byte varNr = 0; varNr < P87_Nlines; varNr++)
       {
-        if (!safe_strncpy(P087_deviceTemplate[varNr], WebServer.arg(getPluginCustomArgName(varNr)), P87_Nchars)) {
+        if (!safe_strncpy(P087_deviceTemplate[varNr], web_server.arg(getPluginCustomArgName(varNr)), P87_Nchars)) {
           error += getCustomTaskSettingsError(varNr);
         }
       }

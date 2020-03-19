@@ -128,7 +128,7 @@ void processDisconnect() {
   if (processedDisconnect) { return; }
   processedDisconnect = true;
   wifiStatus          = ESPEASY_WIFI_DISCONNECTED;
-  setWebserverRunning(false);
+//  setWebserverRunning(false);
   delay(100); // FIXME TD-er: See https://github.com/letscontrolit/ESPEasy/issues/1987#issuecomment-451644424
 
   if (Settings.UseRules) {
@@ -256,8 +256,8 @@ void processGotIP() {
   }
 
   // First try to get the time, since that may be used in logs
-  if (systemTimePresent()) {
-    initTime();
+  if (node_time.systemTimePresent()) {
+    node_time.initTime();
   }
 #ifdef USES_MQTT
   mqtt_reconnect_count        = 0;
