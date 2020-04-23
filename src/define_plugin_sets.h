@@ -1051,7 +1051,9 @@ To create/register a plugin, you have to :
     #define BUILD_NO_RAM_TRACKER
   #endif
 
-#endif#ifdef BUILD_NO_DEBUG
+#endif
+
+#ifdef BUILD_NO_DEBUG
   #ifndef BUILD_NO_DIAGNOSTIC_COMMANDS
     #define BUILD_NO_DIAGNOSTIC_COMMANDS
   #endif
