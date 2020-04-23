@@ -81,7 +81,7 @@
 //   BMP280 I2C Barometric Pressure sensor
 //   SHT1X temperature/humidity sensors
 //   Ser2Net server
-
+//   DL-Bus (Technische Alternative)
 
 // Define globals before plugin sets to allow a personal override of the selected plugins
 #include "ESPEasy-Globals.h"
@@ -370,6 +370,8 @@ void setup()
   }
 
   WiFiConnectRelaxed();
+
+  setWebserverRunning(true);
 
   #ifdef FEATURE_REPORTING
   ReportStatus();

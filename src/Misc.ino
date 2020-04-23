@@ -32,19 +32,6 @@ String getNodeTypeDisplayString(byte nodeType) {
   return "";
 }
 
-String getSettingsTypeString(SettingsType settingsType) {
-  switch (settingsType) {
-    case BasicSettings_Type:            return F("Settings");
-    case TaskSettings_Type:             return F("TaskSettings");
-    case CustomTaskSettings_Type:       return F("CustomTaskSettings");
-    case ControllerSettings_Type:       return F("ControllerSettings");
-    case CustomControllerSettings_Type: return F("CustomControllerSettings");
-    case NotificationSettings_Type:     return F("NotificationSettings");
-    default:
-      break;
-  }
-  return "";
-}
 
 #ifdef USES_MQTT
 String getMQTT_state() {
@@ -756,7 +743,10 @@ void statusLED(bool traffic)
 
     #if defined(ESP8266)
       analogWrite(Settings.Pin_status_led, pwm);
-    #endif
+    #endif // if defined(ESP8266)
+    #if defined(ESP32)
+       analogWriteESP32(Settings.Pin_status_led, pwm);
+    #endif // if defined(ESP32)
   }
 }
 
@@ -1190,7 +1180,7 @@ void ResetFactory()
   Settings.Pin_status_led  = gpio_settings.status_led;
   Settings.Pin_status_led_Inversed  = DEFAULT_PIN_STATUS_LED_INVERSED;
   Settings.Pin_sd_cs       = -1;
-  Settings.Pin_Reset       = -1;
+  Settings.Pin_Reset       = DEFAULT_PIN_RESET_BUTTON;
   Settings.Protocol[0]     = DEFAULT_PROTOCOL;
   Settings.deepSleep_wakeTime       = false;
   Settings.CustomCSS       = false;
@@ -1210,9 +1200,9 @@ void ResetFactory()
   // advanced Settings
   Settings.UseRules 		= DEFAULT_USE_RULES;
   Settings.ControllerEnabled[0] = DEFAULT_CONTROLLER_ENABLED;
-  Settings.MQTTRetainFlag	= DEFAULT_MQTT_RETAIN;
-  Settings.MessageDelay	= DEFAULT_MQTT_DELAY;
-  Settings.MQTTUseUnitNameAsClientId = DEFAULT_MQTT_USE_UNITNAME_AS_CLIENTID;
+  Settings.MQTTRetainFlag_unused	= DEFAULT_MQTT_RETAIN;
+  Settings.MessageDelay_unused	= DEFAULT_MQTT_DELAY;
+  Settings.MQTTUseUnitNameAsClientId_unused = DEFAULT_MQTT_USE_UNITNAME_AS_CLIENTID;
 
 
   Settings.UseSerial		= DEFAULT_USE_SERIAL;
@@ -1227,6 +1217,7 @@ void ResetFactory()
 	Settings.ConnectionFailuresThreshold	= DEFAULT_CON_FAIL_THRES;
 	Settings.WireClockStretchLimit			= DEFAULT_I2C_CLOCK_LIMIT;
 */
+  Settings.I2C_clockSpeed     = DEFAULT_I2C_CLOCK_SPEED;
 
 #ifdef PLUGIN_DESCR
   strcpy_P(Settings.Name, PSTR(PLUGIN_DESCR));
@@ -1245,10 +1236,11 @@ void ResetFactory()
   str2ip((char*)DEFAULT_SERVER, ControllerSettings.IP);
   ControllerSettings.setHostname(F(DEFAULT_SERVER_HOST));
   ControllerSettings.UseDNS = DEFAULT_SERVER_USEDNS;
+  ControllerSettings.useExtendedCredentials(DEFAULT_USE_EXTD_CONTROLLER_CREDENTIALS);
   ControllerSettings.Port = DEFAULT_PORT;
+  setControllerUser(0, ControllerSettings, F(DEFAULT_CONTROLLER_USER));
+  setControllerPass(0, ControllerSettings, F(DEFAULT_CONTROLLER_PASS));
   SaveControllerSettings(0, ControllerSettings);
-  strcpy_P(SecuritySettings.ControllerUser[0], PSTR(DEFAULT_CONTROLLER_USER));
-  strcpy_P(SecuritySettings.ControllerPassword[0], PSTR(DEFAULT_CONTROLLER_PASS));
 #endif
 
   SaveSettings();
@@ -2694,6 +2686,10 @@ bool OTA_possible(uint32_t& maxSketchSize, bool& use2step) {
   maxSketchSize -= 16; // Must leave 16 bytes at the end.
   if (maxSketchSize > MAX_SKETCH_SIZE) maxSketchSize = MAX_SKETCH_SIZE;
   return otaPossible;
+#elif defined(ESP32)
+  maxSketchSize = MAX_SKETCH_SIZE;
+  use2step = false;
+  return true;
 #else
   return false;
 #endif
