@@ -80,7 +80,7 @@ docs/source/_build/
 venv/
 
 .idea/
-
+build_flags = -DMQTT_MAX_PACKET_SIZE=1024
 tools/vagrant/.vagrant/
 
 tools/vagrant/build/
@@ -88,3 +88,4 @@ tools/vagrant/build/
 tools/vagrant/Custom.h
 
 tools/vagrant/pio_envlist.txt
+
